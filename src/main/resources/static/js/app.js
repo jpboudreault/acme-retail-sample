@@ -8,6 +8,9 @@ angular.module('app', [ 'ngRoute' ]).config(function($routeProvider) {
     }).when('/products', {
         templateUrl : 'products.html',
         controller : 'products'
+    }).when('/companies', {
+        templateUrl : 'companies.html',
+        controller : 'companies'
     }).when('/sales', {
         templateUrl : 'sales.html',
         controller : 'sales'
@@ -77,6 +80,10 @@ angular.module('app', [ 'ngRoute' ]).config(function($routeProvider) {
 }).controller('products', function($scope, $http) {
     $http.get('api/products').success(function(data) {
         $scope.products = _.sortBy(data, 'name');
+    });
+}).controller('companies', function($scope, $http) {
+    $http.get('api/companies').success(function(data) {
+        $scope.companies = _.sortBy(data, 'name');
     });
 }).controller('sales', function($scope, $http) {
     $scope.activeProduct = null;
