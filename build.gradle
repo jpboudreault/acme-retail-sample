@@ -2,19 +2,42 @@ buildscript {
     repositories {
         mavenLocal()
         mavenCentral()
+        maven { url "https://repo.spring.io/libs-release" }
     }
     dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.1.10.RELEASE")
     }
 }
 
 apply plugin: 'java'
+apply plugin: 'spring-boot'
+apply plugin: 'war'
+
+// to generate spring boot's jar
+jar {
+    baseName = 'acme-retail-sample'
+    version =  '0.1.0'
+}
+
+// to generate a good old war
+war {
+    baseName = 'acme-retail-sample'
+    version =  '0.1.0'
+}
 
 repositories {
     mavenLocal()
     mavenCentral()
+    maven { url "https://repo.spring.io/libs-release" }
+}
+
+configurations {
+    providedRuntime // to allow an executable or embeddable war
 }
 
 dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 }
 
 task wrapper(type: Wrapper) {
