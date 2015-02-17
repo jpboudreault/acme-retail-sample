@@ -1,0 +1,12 @@
+# Operating System Files
+*~
+
+# Build Artifacts
+.gradle/
+build/
+
+# IntelliJ IDEA Files
+*.iml
+*.ipr
+*.iws
+*.idea
