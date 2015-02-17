@@ -1,0 +1,23 @@
+<h1>Product Sales</h1>
+<p ng-repeat="product in products">
+    <a ng-click="viewProductSales(product)">View {{product.name}} sales history</a>
+</p>
+<div ng-show="activeProduct">
+    <h2>{{activeProduct.name}} Sales History</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Year</th>
+            <th>Month</th>
+            <th>Sales</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="sale in sales">
+            <td>{{sale.year}}</td>
+            <td>{{sale.month}}</td>
+            <td>{{sale.sales}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
