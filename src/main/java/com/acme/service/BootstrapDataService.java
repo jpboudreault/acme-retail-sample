@@ -3,8 +3,8 @@ package com.acme.service;
 import com.acme.model.MonthlySale;
 import com.acme.model.Product;
 import com.acme.repository.MonthlySaleRepository;
+import com.acme.repository.ProductRepository;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.acme.repository.ProductRepository;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

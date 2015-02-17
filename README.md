@@ -12,6 +12,9 @@ jean-philippe.boudreault@polymtl.ca
 * war is located in `build\libs`
 
 ## TODO
+* use inheritance for models when possible
 * readme setup with appdirect
 * setup oauth
 * order properties and stuff
+* try to get rid of theleaf
+* use mysql for persistence across reboots

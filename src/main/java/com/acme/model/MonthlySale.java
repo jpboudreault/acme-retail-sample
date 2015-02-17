@@ -16,7 +16,6 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class MonthlySale {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
