@@ -10,3 +10,6 @@ build/
 *.ipr
 *.iws
 *.idea
+
+# Project secure config
+config.properties
