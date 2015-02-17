@@ -2,7 +2,7 @@ package com.acme.service;
 
 import com.acme.repository.CompanyRepository;
 import com.acme.repository.UserRepository;
-import com.acme.serializer.AppDirectResponse;
+import com.acme.serializer.appdirect.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ public class SubscriptionService {
     @Autowired
     UserRepository userRepository;
     
-    public AppDirectResponse subscriptionOrder(String url) {
+    public Result subscriptionOrder(String url) {
         // FIXME implement
         return null;
     }

@@ -13,6 +13,7 @@ jean-philippe.boudreault@polymtl.ca
 
 ## TODO
 * use inheritance for models when possible
+* use clean up serializer if possible
 * readme setup with appdirect
 * setup oauth
 * order properties and stuff
