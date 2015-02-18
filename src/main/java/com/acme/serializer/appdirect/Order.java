@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlElement;
 // FIXME validate this part @XmlAccessorType(XmlAccessType.FIELD)
 public class Order {
 	private String editionCode;
+	private String pricingDuration;
 
 	@XmlElement(name="item")
 	private List<Item> items;
