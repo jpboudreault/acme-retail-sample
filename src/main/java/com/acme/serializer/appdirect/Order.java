@@ -1,5 +1,6 @@
 package com.acme.serializer.appdirect;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,11 +11,10 @@ import javax.xml.bind.annotation.XmlElement;
 
 @Getter
 @Setter
-// FIXME validate this part @XmlAccessorType(XmlAccessType.FIELD)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Order {
 	private String editionCode;
 	private String pricingDuration;
 
-	@XmlElement(name="item")
 	private List<Item> items;
 }
