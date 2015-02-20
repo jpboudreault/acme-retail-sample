@@ -13,4 +13,5 @@ public class User {
 	private String lastName;
 	private String openId;
 	private String language;
+	private String uuid;
 }

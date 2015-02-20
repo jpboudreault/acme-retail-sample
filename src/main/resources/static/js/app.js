@@ -85,6 +85,9 @@ angular.module('app', [ 'ngRoute' ]).config(function($routeProvider) {
     $http.get('api/companies').success(function(data) {
         $scope.companies = _.sortBy(data, 'name');
     });
+    $http.get('api/users').success(function(data) {
+        $scope.users = _.sortBy(data, 'lastName');
+    });
 }).controller('sales', function($scope, $http) {
     $scope.activeProduct = null;
 

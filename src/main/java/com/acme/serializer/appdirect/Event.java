@@ -15,5 +15,4 @@ public class Event {
 
     private Boolean success;
     private String message;
-    private String accountIdentifier; // for 'create' events
 }

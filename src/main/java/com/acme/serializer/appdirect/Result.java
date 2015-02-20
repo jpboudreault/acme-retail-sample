@@ -1,12 +1,12 @@
 package com.acme.serializer.appdirect;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+@AllArgsConstructor
 @Getter
 @Setter
 public class Result {
-    private Boolean success;
-    private String message;
-    private String accountIdentifier; // for 'create' events
+    private String content;
 }

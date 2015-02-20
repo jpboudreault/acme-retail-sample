@@ -1,5 +1,9 @@
 <h1>Companies</h1>
 <h3>Current subscribers of Acme Retail Sales Tool</h3>
 <ul>
-	<li ng-repeat="company in companies">{{company.name}} ({{company.subscriptionLevel}})</li>
+	<li ng-repeat="company in companies">{{company.name}} ({{company.editionCode}})</li>
+</ul>
+<h3>And their users</h3>
+<ul>
+	<li ng-repeat="user in users">{{user.lastName}} ({{user.firstName}})</li>
 </ul>
