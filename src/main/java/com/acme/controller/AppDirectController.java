@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Controller specifically for AppDirect notifications
  */
 // FIXME secure with oauth
-// FIXME MANAGE ERRORS
 @Controller
 @RequestMapping("api/app-direct")
 @Transactional
@@ -39,60 +38,74 @@ public class AppDirectController {
     @RequestMapping(value = "subscription-order", params = "url", produces = "application/xml")
     @ResponseBody
     public Result subscriptionOrder(@RequestParam final String url) {
-        LOG.info("subscription order event at url " + url);
+        LOG.info(String.format("subscription order received at %s", url));
 
-        final Event event = appDirectRestTemplate.getForObject(url, Event.class);
+        try {
+            final Event event = appDirectRestTemplate.getForObject(url, Event.class);
 
-        Company company = eventExtractorService.extractCompany(event);
-        String editionCode = eventExtractorService.extractCompanyEditionCode(event);
-        
-        long companyId = synchronizationService.createCompany(company, editionCode).getId();
+            Company company = eventExtractorService.extractCompany(event);
+            String editionCode = eventExtractorService.extractCompanyEditionCode(event);
 
-        User user = eventExtractorService.extractUser(event);
+            long companyId = synchronizationService.createCompany(company, editionCode).getId();
 
-        synchronizationService.createUser(user, companyId);
+            User user = eventExtractorService.extractUser(event);
 
-        // prepare the result, this is a special case we need to provide the account id
-		Result result = new Result();
-        result.setAccountIdentifier(companyId);
-        
-        return result;
+            synchronizationService.createUser(user, companyId);
+
+            // prepare the result, this is a special case we need to provide the account id
+            Result result = new Result();
+            result.setAccountIdentifier(companyId);
+            return result;
+        } catch (Exception e) {
+            LOG.error("subscription change order error", e);
+            return new Result(e);
+        }
     }
 
     @RequestMapping(value = "subscription-change", params = "url", produces = "application/xml")
     @ResponseBody
     public Result subscriptionChange(@RequestParam final String url) {
-        LOG.info("subscription change event at url " + url);
+        LOG.info(String.format("subscription change received at %s", url));
 
-        final Event event = appDirectRestTemplate.getForObject(url, Event.class);
+        try {
+            final Event event = appDirectRestTemplate.getForObject(url, Event.class);
 
-        String editionCode = eventExtractorService.extractCompanyEditionCode(event);
-        long companyId = eventExtractorService.extractCompanyIdentifier(event);
-        synchronizationService.updateSubscription(companyId, editionCode);
+            String editionCode = eventExtractorService.extractCompanyEditionCode(event);
+            long companyId = eventExtractorService.extractCompanyIdentifier(event);
+            synchronizationService.updateSubscription(companyId, editionCode);
 
-        return new Result();
+            return new Result();
+        } catch (Exception e) {
+            LOG.error("subscription change error", e);
+            return new Result(e);
+        }
     }
 
     @RequestMapping(value = "subscription-cancel", params = "url", produces = "application/xml")
     @ResponseBody
     public Result subscriptionCancel(@RequestParam final String url) {
-        LOG.info("subscription cancel event at url " + url);
+        LOG.info(String.format("subscription cancel at %s", url));
 
-        final Event event = appDirectRestTemplate.getForObject(url, Event.class);
+        try {
+            final Event event = appDirectRestTemplate.getForObject(url, Event.class);
 
-        long companyId = eventExtractorService.extractCompanyIdentifier(event);
-        synchronizationService.cancelSubscription(companyId);
+            long companyId = eventExtractorService.extractCompanyIdentifier(event);
+            synchronizationService.cancelSubscription(companyId);
 
-        return new Result();
+            return new Result();
+        } catch (Exception e) {
+            LOG.error("subscription cancel error", e);
+            return new Result(e);
+        }
     }
-    
+
     @RequestMapping(value = "subscription-notice", params = "url", produces = "application/xml")
     @ResponseBody
     public Result subscriptionNotice(@RequestParam final String url) {
         LOG.info("subscription change event at url " + url);
 
         // TODO do me!
-        
+
         return new Result();
     }
 }

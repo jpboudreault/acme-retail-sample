@@ -14,4 +14,9 @@ public class Result {
     private Boolean success = Boolean.TRUE;
     private String message = "ok";
     private Long accountIdentifier;
+    
+    public Result(final Exception e) {
+        success = Boolean.FALSE;
+        message = e.getMessage();
+    }
 }
