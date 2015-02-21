@@ -24,7 +24,7 @@ public class SynchronizationService {
     @Autowired
     UserRepository userRepository;
 
-    public Company createCompany(com.acme.serializer.appdirect.Company adCompany, String editionCode) {
+    public Company createCompany(com.acme.serializer.xml.Company adCompany, String editionCode) {
         Company company = new Company(
                 adCompany.getName(),
                 adCompany.getUuid(),
@@ -36,7 +36,7 @@ public class SynchronizationService {
         return company;
     }
 
-    public User createUser(com.acme.serializer.appdirect.User adUser, Long companyId) {
+    public User createUser(com.acme.serializer.xml.User adUser, Long companyId) {
         User user = new User(
                 adUser.getEmail(),
                 adUser.getFirstName(),

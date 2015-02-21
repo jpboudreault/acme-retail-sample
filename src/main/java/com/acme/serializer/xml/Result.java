@@ -1,4 +1,4 @@
-package com.acme.serializer.appdirect;
+package com.acme.serializer.xml;
 
 import lombok.*;
 import javax.xml.bind.annotation.XmlRootElement;

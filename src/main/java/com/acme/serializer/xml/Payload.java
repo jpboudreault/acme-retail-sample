@@ -1,4 +1,4 @@
-package com.acme.serializer.appdirect;
+package com.acme.serializer.xml;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;

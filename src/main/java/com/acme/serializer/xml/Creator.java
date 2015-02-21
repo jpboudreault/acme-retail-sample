@@ -1,4 +1,4 @@
-package com.acme.serializer.appdirect;
+package com.acme.serializer.xml;
 
 public class Creator extends User {
 }

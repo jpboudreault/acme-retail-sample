@@ -1,9 +1,9 @@
 package com.acme.controller;
 
-import com.acme.serializer.appdirect.Company;
-import com.acme.serializer.appdirect.Event;
-import com.acme.serializer.appdirect.Result;
-import com.acme.serializer.appdirect.User;
+import com.acme.serializer.xml.Company;
+import com.acme.serializer.xml.Event;
+import com.acme.serializer.xml.Result;
+import com.acme.serializer.xml.User;
 import com.acme.service.EventExtractorService;
 import com.acme.service.SynchronizationService;
 import org.apache.commons.logging.Log;
@@ -16,12 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Objects;
-
 /**
  * Controller specifically for AppDirect notifications
  */
-//secure with oauth
+// FIXME secure with oauth
+// FIXME MANAGE ERRORS
 @Controller
 @RequestMapping("api/app-direct")
 @Transactional
