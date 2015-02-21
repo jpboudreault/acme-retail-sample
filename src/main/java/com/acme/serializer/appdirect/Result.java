@@ -1,12 +1,17 @@
 package com.acme.serializer.appdirect;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@AllArgsConstructor
+/**
+ * From by http://info.appdirect.com/developers/docs/api_integration/endpoint_urls/event_notification_urls/
+ */
+@NoArgsConstructor
 @Getter
 @Setter
+@XmlRootElement(name = "result")
 public class Result {
-    private String content;
+    private Boolean success = Boolean.TRUE;
+    private String message = "ok";
+    private String accountIdentifier;
 }
