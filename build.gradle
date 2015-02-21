@@ -16,13 +16,13 @@ apply plugin: 'war'
 // to generate spring boot's jar
 jar {
     baseName = 'acme-retail-sample'
-    version =  '0.2.0'
+    version =  '0.3.0'
 }
 
 // to generate a good old war
 war {
     baseName = 'acme-retail-sample'
-    version =  '0.2.0'
+    version =  '0.3.0'
 }
 
 repositories {

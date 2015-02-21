@@ -4,6 +4,8 @@ import com.acme.model.Company;
 import com.acme.model.User;
 import com.acme.repository.CompanyRepository;
 import com.acme.repository.UserRepository;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 public class SynchronizationService {
+    private final Log LOG = LogFactory.getLog(SynchronizationService.class);
+
     @Autowired
     CompanyRepository companyRepository;
 
@@ -32,7 +36,7 @@ public class SynchronizationService {
         return company;
     }
 
-    public User createUser(com.acme.serializer.appdirect.User adUser, String companyIdentifier) {
+    public User createUser(com.acme.serializer.appdirect.User adUser, Long companyId) {
         User user = new User(
                 adUser.getEmail(),
                 adUser.getFirstName(),
@@ -40,17 +44,36 @@ public class SynchronizationService {
                 adUser.getOpenId(),
                 adUser.getUuid()
         );
-        user.setCompany(companyRepository.findByUuid(companyIdentifier).get(0));
+        user.setCompany(companyRepository.findOne(companyId));
         
         userRepository.save(user);
         
         return user;
     }
 
-    public void updateSubscription(String companyIdentifier, String editionCode) {
-        Company company = companyRepository.findByUuid(companyIdentifier).get(0);
+    public void updateSubscription(Long companyId, String editionCode) {
+        Company company = companyRepository.findOne(companyId);
         company.setEditionCode(editionCode);
         
         companyRepository.save(company);
+    }
+
+    public void cancelSubscription(Long companyId) {
+        // in the real world, we would probably have an active state on the company and wouldn't be destroying it
+
+        Company company = companyRepository.findOne(companyId);
+        if (company == null) {
+            // unknown company? silent failure
+            LOG.warn("No subscription to cancel, company not found :" + companyId);
+            return;
+        }
+        
+        // delete users and company
+        Iterable<User> users = userRepository.findByCompany(company);
+        if (users != null) {
+            userRepository.delete(users);
+        }
+
+        companyRepository.delete(company);
     }
 }

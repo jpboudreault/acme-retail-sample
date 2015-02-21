@@ -21,8 +21,8 @@ public class EventExtractorService {
         return event.getPayload().getOrder().getEditionCode();
     }
 
-    public String extractCompanyIdentifier(Event event) {
-        return event.getPayload().getCompany().getUuid();
+    public Long extractCompanyIdentifier(Event event) {
+        return event.getPayload().getAccount().getAccountIdentifier();
     }
 
     public User extractUser(Event event) {

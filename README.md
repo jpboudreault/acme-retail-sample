@@ -9,12 +9,15 @@ jean-philippe.boudreault@polymtl.ca
 ## Background and Vision
 Senior Java guy a bit rusty after spending the last year doing Rails and Angular only.
 
-Acme Retail App was a holiday project to experiment on the new Spring features (Boot for example) featured on Spring.io 
+Acme Retail App was a holiday project to experiment on the new Spring features (Boot specifically) featured on Spring.io 
 website. When AppDirect's opportunity came by, I decided to use it as a base. This proved challenging for a couple of 
 reasons, one of them being my familiarity with the new way of configuring things.
 
 The vision was to have some data visible only when the user had a particular subscription level. Changes could have been
 seen live. Unfortunately, I did not get the time to finish it up to this point.
+
+I decided to leave some sections of the app unsecured by design to always display AppDirect's integration. Some sections
+do require to be logged in.
 
 ## Configuration
 Copy `application.properties.sample`, configure with appropriate values and rename to `application.properties`
@@ -24,44 +27,41 @@ Copy `application.properties.sample`, configure with appropriate values and rena
 * on *windows* run `graddlew.bat war`
 * war is located in `build\libs`
 
-## Choices
+## About the choices
 ### Gradle
-First time using it, loving it!
+First time using it, loving it! Similar to BuildConfig.groovy on Grails.
 
 ### Spring Boot
-First time using it, really unsure about it! But it seems like the new way.
-
-### Lombok
-Used it in most of my projets! Used the constructor too much a bit here.
-
-### Guava
-So useful but not really required here since there is no complex business logic (yet)
+First time using it, a bit unsure about it! But this might become the new way of doing things.
 
 ### JPA Repositories
+Repositories vs DAOs, though choice. A good old base DAO can be so usefull but a lot of Spring Starter Guides made me give Spring Data JPA a try.
 
-### No Impls
+### No Impls!
+Interesting discussion with a collegue over that and YAGNI. Basically every project I worked on always had Interfaces and their one to one Impl.
+Decided to try it out but still use Spring dependency injection.
 
 ### No real DB (sortof)
 My choice was Postgresql but with time running short and AppFog supporting only MySQL, 
-I decided that the in memory one from Spring Boot Starter JPA would do the trick.
+the In Memory DB from Spring Boot Starter JPA would do the trick.
+
+### Lombok
+Used it in most of my projets! @RequiredArgsConstructors is not really useable on real projects but could be used here to speed up object creation.
+
+### Guava
+So useful library for a serious Java project. Not really required here since there is no complex business logic (yet).
+
+### Jodatime
+Couldn't find a use for it in the current version of Acme Retail! Will become the standard with Java 8.
+
+### No final
+Skipped the final fields and variables for this projects since not everyone likes it, but I am usually a bit crazy
+about placing finals everywhere.
+
+### Angular
+A no brainer, unfortunately with the time allowed I couldn't go further.
 
 ## TODO
-* use inheritance for models when possible
-* use clean up serializer if possible
-* readme setup with appdirect
-* setup oauth
+* setup oauth on some 
+* test with appfog
 * order properties and stuff
-* try to get rid of theleaf
-* use mysql for persistence across reboots
-
-* https://www.appdirect.com/rest/api/events/dummyAssign
-
-http://projects.spring.io/spring-security-oauth/docs/oauth1.html
-* http://docs.spring.io/spring-security/oauth/apidocs/org/springframework/security/oauth/consumer/client/OAuthRestTemplate.html
-
-## REFERENCE
-* http://info.appdirect.com/developers/docs/api_integration/api_overview/
-*
-*http://info.appdirect.com/developers/docs/sample_code_libraries/oauth_api_authorization/
-*
-*

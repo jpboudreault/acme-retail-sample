@@ -14,13 +14,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.Objects;
 
 /**
- * Controller specifically for AppDirect
+ * Controller specifically for AppDirect notifications
  */
 //secure with oauth
 @Controller
-@RequestMapping("/api/app-direct")
+@RequestMapping("api/app-direct")
 @Transactional
 public class AppDirectController {
     private final Log LOG = LogFactory.getLog(AppDirectController.class);
@@ -34,34 +37,63 @@ public class AppDirectController {
     @Autowired
     SynchronizationService synchronizationService;
 
-    @RequestMapping(value = "/subscription-order", params = "url", produces = "application/xml")
+    @RequestMapping(value = "subscription-order", params = "url", produces = "application/xml")
+    @ResponseBody
     public Result subscriptionOrder(@RequestParam final String url) {
         LOG.info("subscription order event at url " + url);
 
-        Event event = appDirectRestTemplate.getForObject(url, Event.class);
+        final Event event = appDirectRestTemplate.getForObject(url, Event.class);
 
         Company company = eventExtractorService.extractCompany(event);
         String editionCode = eventExtractorService.extractCompanyEditionCode(event);
-        synchronizationService.createCompany(company, editionCode);
-
-        String companyId = eventExtractorService.extractCompanyIdentifier(event);
-        User user = eventExtractorService.extractUser(event);
         
+        long companyId = synchronizationService.createCompany(company, editionCode).getId();
+
+        User user = eventExtractorService.extractUser(event);
+
         synchronizationService.createUser(user, companyId);
 
-		return new Result("ok");
+        // prepare the result, this is a special case we need to provide the account id
+		Result result = new Result();
+        result.setAccountIdentifier(companyId);
+        
+        return result;
     }
 
-    @RequestMapping(value = "/subscription-change", params = "url", produces = "application/xml")
+    @RequestMapping(value = "subscription-change", params = "url", produces = "application/xml")
+    @ResponseBody
     public Result subscriptionChange(@RequestParam final String url) {
         LOG.info("subscription change event at url " + url);
 
-        Event event = appDirectRestTemplate.getForObject(url, Event.class);
+        final Event event = appDirectRestTemplate.getForObject(url, Event.class);
 
         String editionCode = eventExtractorService.extractCompanyEditionCode(event);
-        String companyId = eventExtractorService.extractCompanyIdentifier(event);
-        synchronizationService.updateSubscription(editionCode, companyId);
+        long companyId = eventExtractorService.extractCompanyIdentifier(event);
+        synchronizationService.updateSubscription(companyId, editionCode);
 
-        return new Result("ok");
+        return new Result();
+    }
+
+    @RequestMapping(value = "subscription-cancel", params = "url", produces = "application/xml")
+    @ResponseBody
+    public Result subscriptionCancel(@RequestParam final String url) {
+        LOG.info("subscription cancel event at url " + url);
+
+        final Event event = appDirectRestTemplate.getForObject(url, Event.class);
+
+        long companyId = eventExtractorService.extractCompanyIdentifier(event);
+        synchronizationService.cancelSubscription(companyId);
+
+        return new Result();
+    }
+    
+    @RequestMapping(value = "subscription-notice", params = "url", produces = "application/xml")
+    @ResponseBody
+    public Result subscriptionNotice(@RequestParam final String url) {
+        LOG.info("subscription change event at url " + url);
+
+        // TODO do me!
+        
+        return new Result();
     }
 }
