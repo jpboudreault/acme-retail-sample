@@ -1,5 +1,6 @@
 package com.acme.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -20,6 +21,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    // for now ignore this one in json to avoid the need of creating a custom view when it's not loaded
+    @JsonIgnore
     @NotNull
     @ManyToOne(fetch=FetchType.LAZY)
     private Company company;
