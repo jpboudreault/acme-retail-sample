@@ -54,6 +54,10 @@ So useful library for a serious Java project. Not really required here since the
 ### Jodatime
 Couldn't find a use for it in the current version of Acme Retail! Will become the standard with Java 8.
 
+### No final
+Skipped the final fields and variables for this projects since not everyone likes it, but I am usually a bit crazy
+about placing finals everywhere.
+
 ### Angular
 A no brainer, unfortunately with the time allowed I couldn't go further.
 

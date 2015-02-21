@@ -13,5 +13,5 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Result {
     private Boolean success = Boolean.TRUE;
     private String message = "ok";
-    private String accountIdentifier;
+    private Long accountIdentifier;
 }

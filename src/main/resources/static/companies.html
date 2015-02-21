@@ -1,9 +1,11 @@
-<h1>Companies</h1>
+<h1>Companies (public)</h1>
 <h3>Current subscribers of Acme Retail Sales Tool</h3>
 <ul>
 	<li ng-repeat="company in companies">{{company.name}} ({{company.editionCode}})</li>
+	<li ng-show="_.isEmpty(companies)">none</li>
 </ul>
 <h3>And their users</h3>
 <ul>
 	<li ng-repeat="user in users">{{user.lastName}} ({{user.firstName}})</li>
+    <li ng-show="_.isEmpty(users)">none</li>
 </ul>

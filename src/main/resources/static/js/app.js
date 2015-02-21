@@ -1,4 +1,4 @@
-angular.module('app', [ 'ngRoute' ]).config(function($routeProvider) {
+angular.module('app', [ 'ngRoute' ]).config(function($routeProvider) {    // allow using lodash in views
     $routeProvider.when('/', {
         templateUrl : 'home.html',
         controller : 'home'
@@ -15,12 +15,22 @@ angular.module('app', [ 'ngRoute' ]).config(function($routeProvider) {
         templateUrl : 'sales.html',
         controller : 'sales'
     }).otherwise('/');
-
+}).controller('companies', function($scope, $http) {
+    // load companies and their users
+    $http.get('api/companies').success(function(data) {
+        $scope.companies = _.sortBy(data, 'name');
+    });
+    $http.get('api/users').success(function(data) {
+        $scope.users = _.sortBy(data, 'lastName');
+    });
+}).controller('home', function($scope, $http) {
 }).controller('navigation', function($rootScope, $scope, $http, $location, $route) {
+    // used to detect active tab
     $scope.tab = function(route) {
         return $route.current && route === $route.current.controller;
     };
 
+    // todo use or clear
     var authenticate = function(callback) {
         $http.get('user').success(function(data) {
             if (data.name) {
@@ -34,10 +44,10 @@ angular.module('app', [ 'ngRoute' ]).config(function($routeProvider) {
             callback && callback();
         });
 
-    }
+    };
 
+    // todo use or clear
     //authenticate();
-
     $scope.credentials = {};
     $scope.login = function() {
         $http.post('login', $.param($scope.credentials), {
@@ -65,36 +75,20 @@ angular.module('app', [ 'ngRoute' ]).config(function($routeProvider) {
             $rootScope.authenticated = false;
         })
     };
-
-    $scope.logout = function() {
-        $http.post('logout', {}).success(function() {
-            $rootScope.authenticated = false;
-            $location.path("/");
-        }).error(function(data) {
-            console.log("Logout failed")
-            $rootScope.authenticated = false;
-        });
-    }
-
-}).controller('home', function($scope, $http) {
 }).controller('products', function($scope, $http) {
+    // load products
     $http.get('api/products').success(function(data) {
         $scope.products = _.sortBy(data, 'name');
-    });
-}).controller('companies', function($scope, $http) {
-    $http.get('api/companies').success(function(data) {
-        $scope.companies = _.sortBy(data, 'name');
-    });
-    $http.get('api/users').success(function(data) {
-        $scope.users = _.sortBy(data, 'lastName');
     });
 }).controller('sales', function($scope, $http) {
     $scope.activeProduct = null;
 
+    // load products
     $http.get('api/products').success(function(data) {
         $scope.products = _.sortBy(data, 'name');
     });
-    
+
+    // triggered when a product is selected
     $scope.viewProductSales = function (product) {
         $scope.activeProduct = null;
         $scope.sales = null;
@@ -104,4 +98,6 @@ angular.module('app', [ 'ngRoute' ]).config(function($routeProvider) {
             $scope.sales = _.sortBy(data, ['year', 'month']);
         });
     };
+}).run(function($rootScope) {
+    $rootScope._ = _;
 });
