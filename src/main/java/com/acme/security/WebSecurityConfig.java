@@ -14,8 +14,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/**").permitAll() // TODO configure better than this
-                .anyRequest().authenticated()
+                .antMatchers("/*.html") // html are unprotected
+                .permitAll()
+                .antMatchers("/api/companies/*") // unprotected to show the app integration
+                .permitAll()
+                .antMatchers("/api/users/*") // unprotected to show the app integration
+                .permitAll()
+                .anyRequest()
+                .authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login") // TODO no login auth i guess
