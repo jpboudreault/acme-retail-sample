@@ -20,7 +20,12 @@ I decided to leave some sections of the app unsecured by design to always displa
 do require to be logged in.
 
 ## Configuration
-Copy `application.properties.sample`, configure with appropriate values and rename to `application.properties`
+* Create a developer account at https://www.appdirect.com/developers/register
+* Clone this project
+* Copy `application.properties.sample`, adjust with appropriate values and rename to `application.properties`
+* Configure the endpoints on AppDirect with the following samples
+* Run the application using `./gradlew bootRun`
+* Login through AppDirect.
 
 ## Creating a war
 * on *linux* run `./graddlew war`
