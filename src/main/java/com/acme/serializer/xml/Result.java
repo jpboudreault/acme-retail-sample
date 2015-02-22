@@ -1,6 +1,9 @@
 package com.acme.serializer.xml;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**

@@ -57,7 +57,7 @@ public class AppDirectController {
             result.setAccountIdentifier(companyId);
             return result;
         } catch (Exception e) {
-            LOG.error("subscription change order error", e);
+            LOG.error("subscription order error", e);
             return new Result(e);
         }
     }
@@ -99,10 +99,30 @@ public class AppDirectController {
         }
     }
 
-    @RequestMapping(value = "subscription-notice", params = "url", produces = "application/xml")
+    @RequestMapping(value = "subscription-status", params = "url", produces = "application/xml")
     @ResponseBody
-    public Result subscriptionNotice(@RequestParam final String url) {
-        LOG.info("subscription change event at url " + url);
+    public Result subscriptionStatus(@RequestParam final String url) {
+        LOG.info("subscription status event at url " + url);
+
+        // TODO do me!
+
+        return new Result();
+    }
+
+    @RequestMapping(value = "user-assignment", params = "url", produces = "application/xml")
+    @ResponseBody
+    public Result userAssignment(@RequestParam final String url) {
+        LOG.info("user assignment event at url " + url);
+
+        // TODO do me!
+
+        return new Result();
+    }
+
+    @RequestMapping(value = "user-unassignment", params = "url", produces = "application/xml")
+    @ResponseBody
+    public Result userUnassignment(@RequestParam final String url) {
+        LOG.info("user unassignment event at url " + url);
 
         // TODO do me!
 

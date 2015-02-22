@@ -62,6 +62,6 @@ about placing finals everywhere.
 A no brainer, unfortunately with the time allowed I couldn't go further.
 
 ## TODO
-* setup oauth on some 
+* make stuff visible within angular
 * test with appfog
 * order properties and stuff
