@@ -19,13 +19,28 @@ seen live. Unfortunately, I did not get the time to finish it up to this point.
 I decided to leave some sections of the app unsecured by design to always display AppDirect's integration. Some sections
 do require to be logged in.
 
-## Configuration
+## AppDirect Configuration
 * Create a developer account at https://www.appdirect.com/developers/register
+* Create a new product
+* Configure your product to have 2 editions with the following Edition Codes : FREE, PREMIUM
+* Configure the endpoints on AppDirect based on the section below
+
+| Endpoint                                                        | URL         |
+| -------------------------------------------------------------- | ----------- |
+| `server-url`/login/openid?openid_identifier={openid}           | Login       |
+| `server-url`/*                                                 | Realm       |
+| `server-url`/api/app-direct/subscription-order?url={eventUrl}  | Create      |
+| `server-url`/api/app-direct/subscription-change?url={eventUrl} | Change      |
+| `server-url`/api/app-direct/subscription-cancel?url={eventUrl} | Cancel      |
+| `server-url`/api/app-direct/subscription-notice?url={eventUrl} | Notice      |
+| `server-url`/api/app-direct/user-assignment?url={eventUrl}     | User Add    |
+| `server-url`/api/app-direct/user-unassignment?url={eventUrl}   | User Delete |
+
+## Code Configuration
 * Clone this project
 * Copy `application.properties.sample`, adjust with appropriate values and rename to `application.properties`
-* Configure the endpoints on AppDirect with the following samples
 * Run the application using `./gradlew bootRun`
-* Login through AppDirect.
+* Login in the application through your AppDirect account.
 
 ## Creating a war
 * on *linux* run `./graddlew war`
@@ -51,7 +66,7 @@ My choice was Postgresql but with time running short and AppFog supporting only 
 the In Memory DB from Spring Boot Starter JPA would do the trick.
 
 ### Lombok
-Used it in most of my projets! @RequiredArgsConstructors is not really useable on real projects but could be used here to speed up object creation.
+Used it in most of my projets! 
 
 ### Guava
 So useful library for a serious Java project. Not really required here since there is no complex business logic (yet).
@@ -59,12 +74,12 @@ So useful library for a serious Java project. Not really required here since the
 ### Jodatime
 Couldn't find a use for it in the current version of Acme Retail! Will become the standard with Java 8.
 
-### No final
+### No final modifier
 Skipped the final fields and variables for this projects since not everyone likes it, but I am usually a bit crazy
 about placing finals everywhere.
 
 ### Angular
-A no brainer, unfortunately with the time allowed I couldn't go further.
+A no brainer, unfortunately with the time allowed I couldn't go further than some basic stuff.
 
 ## TODO
 * make stuff visible within angular

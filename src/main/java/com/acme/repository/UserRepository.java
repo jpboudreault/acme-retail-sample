@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface UserRepository extends CrudRepository<User, Long> {
     public Iterable<User> findByCompany(Company company);
+    public Iterable<User> findByOpenId(String openId);
 }
 
 

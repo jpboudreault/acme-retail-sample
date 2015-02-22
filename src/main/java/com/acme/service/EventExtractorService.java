@@ -25,7 +25,14 @@ public class EventExtractorService {
         return event.getPayload().getAccount().getAccountIdentifier();
     }
 
+    public String extractNotice(Event event) {
+        return event.getPayload().getNotice().getType();
+    }
+
     public User extractUser(Event event) {
-        return Objects.firstNonNull(event.getPayload().getUser(), event.getCreator());
+        // use any specific user first
+        return Objects.firstNonNull(
+                event.getPayload().getUser(), 
+                event.getCreator());
     }
 }
