@@ -16,13 +16,13 @@ apply plugin: 'war'
 // to generate spring boot's jar
 jar {
     baseName = 'acme-retail-sample'
-    version =  '0.3.0'
+    version =  '0.4.0'
 }
 
 // to generate a good old war
 war {
     baseName = 'acme-retail-sample'
-    version =  '0.3.0'
+    version =  '0.4.0'
 }
 
 repositories {
@@ -41,8 +41,8 @@ dependencies {
     compile 'org.projectlombok:lombok:1.16.2'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa'
     compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.security:spring-security-openid'
     compile 'org.springframework.security.oauth:spring-security-oauth:2.0.6.RELEASE'
-//    compile 'org.springframework.security:spring-security-openid'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 }
 

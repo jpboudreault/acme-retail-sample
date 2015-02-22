@@ -1,8 +1,8 @@
 package com.acme.service;
 
-import com.acme.serializer.appdirect.Company;
-import com.acme.serializer.appdirect.Event;
-import com.acme.serializer.appdirect.User;
+import com.acme.serializer.xml.Company;
+import com.acme.serializer.xml.Event;
+import com.acme.serializer.xml.User;
 import com.google.common.base.Objects;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

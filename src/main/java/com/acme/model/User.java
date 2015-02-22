@@ -21,7 +21,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    // for now ignore this one in json to avoid the need of creating a custom view when it's not loaded
     @JsonIgnore
     @NotNull
     @ManyToOne(fetch=FetchType.LAZY)
@@ -41,11 +40,13 @@ public class User {
     @NotNull
     private String lastName;
 
+    @JsonIgnore
     @NonNull
     @NotNull
     @Column(unique = true)
     private String openId;
 
+    @JsonIgnore
     @NonNull
     @NotNull
     @Column(unique = true)

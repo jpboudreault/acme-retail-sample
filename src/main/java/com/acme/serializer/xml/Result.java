@@ -1,6 +1,9 @@
-package com.acme.serializer.appdirect;
+package com.acme.serializer.xml;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -14,4 +17,9 @@ public class Result {
     private Boolean success = Boolean.TRUE;
     private String message = "ok";
     private Long accountIdentifier;
+    
+    public Result(final Exception e) {
+        success = Boolean.FALSE;
+        message = e.getMessage();
+    }
 }

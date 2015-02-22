@@ -1,13 +1,13 @@
-package com.acme.serializer.appdirect;
+package com.acme.serializer.xml;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Account {
-	private Long accountIdentifier;
-	private String status;
+public class Item {
+	private Long quantity;
+	private String unit;
 }

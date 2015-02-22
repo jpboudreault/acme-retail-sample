@@ -1,13 +1,12 @@
-package com.acme.serializer.appdirect;
+package com.acme.serializer.xml;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Item {
-	private Long quantity;
-	private String unit;
+public class Notice {
+	private String type;
 }
