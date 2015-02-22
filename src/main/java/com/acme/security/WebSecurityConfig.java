@@ -12,39 +12,28 @@ import org.springframework.security.openid.OpenIDAuthenticationFilter;
 @EnableWebMvcSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    OAuthProviderProcessingFilter oAuthProviderProcessingFilter;
+    OAuthProviderProcessingFilter appDirectProcessingFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable();
-
-        http
                 .authorizeRequests()
                 .antMatchers("/*.html", "/**/*.js", "/").permitAll()
-                .antMatchers("/api/companies", "/api/companies/**").permitAll()
-                .antMatchers("/api/users", "/api/users/**").permitAll()
-                .antMatchers("/api/app-direct/*").permitAll() // todo fix this someday
-                .anyRequest().authenticated();
-        
-        http
+                .antMatchers("/api/companies", "/api/companies/**").permitAll() // unsecured by design
+                .antMatchers("/api/users", "/api/users/**").permitAll() // unsecured by design
+                .antMatchers("/api/app-direct/*").permitAll() // security using the app direct filter
+                .anyRequest().authenticated()
+
+                .and()
                 .openidLogin()
                 .permitAll()
                 .authenticationUserDetailsService(new CustomUserDetailsService())
-                .attributeExchange("https://www.appdirect.com.*")
-                .attribute("email")
-                .type("http://axschema.org/contact/email")
-                .required(true)
+
                 .and()
-                .attribute("firstname")
-                .type("http://axschema.org/namePerson/first")
-                .required(true)
-                .and()
-                .attribute("lastname")
-                .type("http://axschema.org/namePerson/last")
-                .required(true);
+                .logout()
+                .logoutSuccessUrl("https://www.appdirect.com");
 
         http
-                .addFilterAfter(oAuthProviderProcessingFilter, OpenIDAuthenticationFilter.class);
+                .addFilterAfter(appDirectProcessingFilter, OpenIDAuthenticationFilter.class);
     }
 }

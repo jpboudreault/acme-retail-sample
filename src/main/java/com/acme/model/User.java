@@ -1,8 +1,6 @@
 package com.acme.model;
 
-import com.acme.serializer.json.View;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -10,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.xml.soap.Detail;
 
 /**
  * Only support AppDirect's users (no passw and orphans)
@@ -24,13 +21,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @JsonView(value = Detail.class)
+    @JsonIgnore
     @NotNull
     @ManyToOne(fetch=FetchType.LAZY)
     private Company company;
 
     // sadly Email annotation is hibernate only
-    @JsonView(value = Detail.class)
     @NonNull
     @NotNull
     @Column(unique = true)

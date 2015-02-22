@@ -40,6 +40,23 @@ public class BeanConfiguration extends BaseProtectedResourceDetails {
         return new OAuthRestTemplate(resourceDetails);
     }
 
+    /**
+     * To secure AppDirect's events
+     */
+    @Bean
+    OAuthProviderProcessingFilter appDirectProcessingFilter() {
+        List<RequestMatcher> matchers = Lists.newArrayList();
+        matchers.add(new AntPathRequestMatcher("/api/app-direct/**"));
+
+        ProtectedResourceProcessingFilter filter = new CustomResourceProcessingFilter(matchers);
+        filter.setConsumerDetailsService(consumerDetailsService());
+        filter.setTokenServices(providerTokenServices());
+        return filter;
+    }
+
+    /**
+     * Required by appDirectProcessingFilter
+     */
     @Bean
     public ConsumerDetailsService consumerDetailsService() {
         InMemoryConsumerDetailsService consumerDetailsService = new InMemoryConsumerDetailsService();
@@ -57,18 +74,9 @@ public class BeanConfiguration extends BaseProtectedResourceDetails {
         return consumerDetailsService;
     }
 
-    @Bean
-    OAuthProviderProcessingFilter oAuthProviderProcessingFilter() {
-        List<RequestMatcher> requestMatchers = Lists.newArrayList();
-        requestMatchers.add(new AntPathRequestMatcher("/api/app-direct/**"));
-
-        ProtectedResourceProcessingFilter filter = new CustomResourceProcessingFilter(requestMatchers);
-
-        filter.setConsumerDetailsService(consumerDetailsService());
-        filter.setTokenServices(providerTokenServices());
-        return filter;
-    }
-
+    /**
+     * Required by appDirectProcessingFilter
+     */
     @Bean
     public OAuthProviderTokenServices providerTokenServices() {
         return new InMemoryProviderTokenServices();
