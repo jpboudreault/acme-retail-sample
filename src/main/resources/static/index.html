@@ -11,13 +11,14 @@
 </head>
 
 <body ng-app="app" ng-cloak class="ng-cloak">
+
 <div ng-controller="navigation" class="container">
     <ul class="nav nav-pills" role="tablist">
         <li ng-class="{ active: tab('home') }"><a href="#/">Home</a></li>
-        <li ng-class="{ active: tab('products') }"><a href="#/products">Products</a></li>
-        <li ng-class="{ active: tab('sales') }"><a href="#/sales">Sales history</a></li>
+        <li ng-show="authenticated" ng-class="{ active: tab('products') }"><a href="#/products">Products</a></li>
+        <li ng-show="authenticated && _.contains(roles, 'ROLE_PREMIUM')" ng-class="{ active: tab('sales') }"><a href="#/sales">Sales history</a></li>
         <li ng-class="{ active: tab('companies') }"><a href="#/companies">Subscribers</a></li>
-        <li ng-show="true"><a href="logout">Logout</a></li>
+        <li ng-show="authenticated"><a href="logout">Logout</a></li>
     </ul>
 </div>
 <div ng-view class="container"></div>

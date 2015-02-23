@@ -1,9 +1,9 @@
 package com.acme.service;
 
 import com.acme.serializer.xml.Company;
+import com.acme.serializer.xml.Creator;
 import com.acme.serializer.xml.Event;
 import com.acme.serializer.xml.User;
-import com.google.common.base.Objects;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional(readOnly = true)
-public class EventExtractorService {
+public class EventExtractionService {
     public Company extractCompany(Event event) {
         return event.getPayload().getCompany();
     }
@@ -25,7 +25,15 @@ public class EventExtractorService {
         return event.getPayload().getAccount().getAccountIdentifier();
     }
 
+    public Creator extractCreator(Event event) {
+        return event.getCreator();
+    }
+
+    public String extractNotice(Event event) {
+        return event.getPayload().getNotice().getType();
+    }
+
     public User extractUser(Event event) {
-        return Objects.firstNonNull(event.getPayload().getUser(), event.getCreator());
+        return event.getPayload().getUser();
     }
 }

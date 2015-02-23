@@ -4,7 +4,7 @@ import com.acme.serializer.xml.Company;
 import com.acme.serializer.xml.Event;
 import com.acme.serializer.xml.Result;
 import com.acme.serializer.xml.User;
-import com.acme.service.EventExtractorService;
+import com.acme.service.EventExtractionService;
 import com.acme.service.SynchronizationService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,36 +19,35 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * Controller specifically for AppDirect notifications
  */
-// FIXME secure with oauth
 @Controller
 @RequestMapping("api/app-direct")
 @Transactional
 public class AppDirectController {
-    private final Log LOG = LogFactory.getLog(AppDirectController.class);
+    private Log LOG = LogFactory.getLog(AppDirectController.class);
 
     @Autowired
     OAuthRestTemplate appDirectRestTemplate;
 
     @Autowired
-    EventExtractorService eventExtractorService;
+    EventExtractionService eventExtractionService;
 
     @Autowired
     SynchronizationService synchronizationService;
 
     @RequestMapping(value = "subscription-order", params = "url", produces = "application/xml")
     @ResponseBody
-    public Result subscriptionOrder(@RequestParam final String url) {
+    public Result subscriptionOrder(@RequestParam String url) {
         LOG.info(String.format("subscription order received at %s", url));
 
         try {
-            final Event event = appDirectRestTemplate.getForObject(url, Event.class);
+            Event event = appDirectRestTemplate.getForObject(url, Event.class);
 
-            Company company = eventExtractorService.extractCompany(event);
-            String editionCode = eventExtractorService.extractCompanyEditionCode(event);
+            Company company = eventExtractionService.extractCompany(event);
+            String editionCode = eventExtractionService.extractCompanyEditionCode(event);
 
-            long companyId = synchronizationService.createCompany(company, editionCode).getId();
+            Long companyId = synchronizationService.createCompany(company, editionCode).getId();
 
-            User user = eventExtractorService.extractUser(event);
+            User user = eventExtractionService.extractCreator(event);
 
             synchronizationService.createUser(user, companyId);
 
@@ -64,14 +63,15 @@ public class AppDirectController {
 
     @RequestMapping(value = "subscription-change", params = "url", produces = "application/xml")
     @ResponseBody
-    public Result subscriptionChange(@RequestParam final String url) {
+    public Result subscriptionChange(@RequestParam String url) {
         LOG.info(String.format("subscription change received at %s", url));
 
         try {
-            final Event event = appDirectRestTemplate.getForObject(url, Event.class);
+            Event event = appDirectRestTemplate.getForObject(url, Event.class);
 
-            String editionCode = eventExtractorService.extractCompanyEditionCode(event);
-            long companyId = eventExtractorService.extractCompanyIdentifier(event);
+            String editionCode = eventExtractionService.extractCompanyEditionCode(event);
+            Long companyId = eventExtractionService.extractCompanyIdentifier(event);
+
             synchronizationService.updateSubscription(companyId, editionCode);
 
             return new Result();
@@ -83,13 +83,14 @@ public class AppDirectController {
 
     @RequestMapping(value = "subscription-cancel", params = "url", produces = "application/xml")
     @ResponseBody
-    public Result subscriptionCancel(@RequestParam final String url) {
+    public Result subscriptionCancel(@RequestParam String url) {
         LOG.info(String.format("subscription cancel at %s", url));
 
         try {
-            final Event event = appDirectRestTemplate.getForObject(url, Event.class);
+            Event event = appDirectRestTemplate.getForObject(url, Event.class);
 
-            long companyId = eventExtractorService.extractCompanyIdentifier(event);
+            Long companyId = eventExtractionService.extractCompanyIdentifier(event);
+
             synchronizationService.cancelSubscription(companyId);
 
             return new Result();
@@ -99,33 +100,63 @@ public class AppDirectController {
         }
     }
 
-    @RequestMapping(value = "subscription-status", params = "url", produces = "application/xml")
+    @RequestMapping(value = "subscription-notice", params = "url", produces = "application/xml")
     @ResponseBody
-    public Result subscriptionStatus(@RequestParam final String url) {
-        LOG.info("subscription status event at url " + url);
+    public Result subscriptionNotice(@RequestParam String url) {
+        LOG.info("subscription notice event at url " + url);
 
-        // TODO do me!
+        try {
+            Event event = appDirectRestTemplate.getForObject(url, Event.class);
 
-        return new Result();
+            Long companyId = eventExtractionService.extractCompanyIdentifier(event);
+            String notice = eventExtractionService.extractNotice(event);
+
+            synchronizationService.applyNotice(companyId, notice);
+
+            return new Result();
+        } catch (Exception e) {
+            LOG.error("subscription notice error", e);
+            return new Result(e);
+        }
     }
 
     @RequestMapping(value = "user-assignment", params = "url", produces = "application/xml")
     @ResponseBody
-    public Result userAssignment(@RequestParam final String url) {
+    public Result userAssignment(@RequestParam String url) {
         LOG.info("user assignment event at url " + url);
 
-        // TODO do me!
+        try {
+            Event event = appDirectRestTemplate.getForObject(url, Event.class);
 
-        return new Result();
+            Long companyId = eventExtractionService.extractCompanyIdentifier(event);
+            User user = eventExtractionService.extractUser(event);
+
+            synchronizationService.createUser(user, companyId);
+
+            return new Result();
+        } catch (Exception e) {
+            LOG.error("user assignment error", e);
+            return new Result(e);
+        }
     }
 
     @RequestMapping(value = "user-unassignment", params = "url", produces = "application/xml")
     @ResponseBody
-    public Result userUnassignment(@RequestParam final String url) {
+    public Result userUnassignment(@RequestParam String url) {
         LOG.info("user unassignment event at url " + url);
 
-        // TODO do me!
+        try {
+            Event event = appDirectRestTemplate.getForObject(url, Event.class);
 
-        return new Result();
+            Long companyId = eventExtractionService.extractCompanyIdentifier(event);
+            String openId = eventExtractionService.extractUser(event).getOpenId();
+
+            synchronizationService.removeUser(openId, companyId);
+
+            return new Result();
+        } catch (Exception e) {
+            LOG.error("user unassignment error", e);
+            return new Result(e);
+        }
     }
 }

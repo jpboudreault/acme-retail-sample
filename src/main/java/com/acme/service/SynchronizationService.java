@@ -4,6 +4,8 @@ import com.acme.model.Company;
 import com.acme.model.User;
 import com.acme.repository.CompanyRepository;
 import com.acme.repository.UserRepository;
+import com.google.common.base.Preconditions;
+import com.google.common.collect.Iterables;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,9 +53,34 @@ public class SynchronizationService {
         return user;
     }
 
+    public void removeUser(String openId, Long companyId) {
+        Iterable<User> users = userRepository.findByOpenId(openId);
+        if (Iterables.isEmpty(users)) {
+            // unknown user? silent failure
+            LOG.warn(String.format("No user to remove, openId not found : %s", openId));
+            return;
+        }
+
+        User user = Iterables.getFirst(users, null);
+
+        // sanity check on the user's company
+        Preconditions.checkState(
+                companyId.equals(user.getCompany().getId()), 
+                String.format("User %s doesn't belong in the correct company %d", openId, companyId));
+        
+        userRepository.delete(user); // we checked that there's one already
+    } 
+        
     public void updateSubscription(Long companyId, String editionCode) {
         Company company = companyRepository.findOne(companyId);
         company.setEditionCode(editionCode);
+        
+        companyRepository.save(company);
+    }
+
+    public void applyNotice(Long companyId, String notice) {
+        Company company = companyRepository.findOne(companyId);
+        company.setNotice(notice);
         
         companyRepository.save(company);
     }
@@ -64,7 +91,7 @@ public class SynchronizationService {
         Company company = companyRepository.findOne(companyId);
         if (company == null) {
             // unknown company? silent failure
-            LOG.warn("No subscription to cancel, company not found :" + companyId);
+            LOG.warn(String.format("No subscription to cancel, company not found : %d", companyId));
             return;
         }
         

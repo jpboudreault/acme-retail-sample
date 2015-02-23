@@ -13,14 +13,34 @@ Acme Retail App was a holiday project to experiment on the new Spring features (
 website. When AppDirect's opportunity came by, I decided to use it as a base. This proved challenging for a couple of 
 reasons, one of them being my familiarity with the new way of configuring things.
 
-The vision was to have some data visible only when the user had a particular subscription level. Changes could have been
-seen live. Unfortunately, I did not get the time to finish it up to this point.
+The vision was to have some data visible only when the user had a particular subscription level. This behavior can be
+observed when logged as a FREE or PREMIUM subscriber.
 
 I decided to leave some sections of the app unsecured by design to always display AppDirect's integration. Some sections
 do require to be logged in.
 
-## Configuration
-Copy `application.properties.sample`, configure with appropriate values and rename to `application.properties`
+## AppDirect Configuration
+* Create a developer account at https://www.appdirect.com/developers/register
+* Create a new product
+* Configure your product to have 2 editions with the following Edition Codes : FREE, PREMIUM
+* Configure the endpoints on AppDirect based on the section below
+
+| Endpoint                                                        | URL         |
+| -------------------------------------------------------------- | ----------- |
+| `server-url`/login/openid?openid_identifier={openid}           | Login       |
+| `server-url`/*                                                 | Realm       |
+| `server-url`/api/app-direct/subscription-order?url={eventUrl}  | Create      |
+| `server-url`/api/app-direct/subscription-change?url={eventUrl} | Change      |
+| `server-url`/api/app-direct/subscription-cancel?url={eventUrl} | Cancel      |
+| `server-url`/api/app-direct/subscription-notice?url={eventUrl} | Notice      |
+| `server-url`/api/app-direct/user-assignment?url={eventUrl}     | User Add    |
+| `server-url`/api/app-direct/user-unassignment?url={eventUrl}   | User Delete |
+
+## Code Configuration
+* Clone this project
+* Copy `application.properties.sample`, adjust with appropriate values and rename to `application.properties`
+* Run the application using `./gradlew bootRun`
+* Login in the application through your AppDirect account.
 
 ## Creating a war
 * on *linux* run `./graddlew war`
@@ -32,10 +52,11 @@ Copy `application.properties.sample`, configure with appropriate values and rena
 First time using it, loving it! Similar to BuildConfig.groovy on Grails.
 
 ### Spring Boot
-First time using it, a bit unsure about it! But this might become the new way of doing things.
+First time using it, a bit lost. According to spring.io, this is the new way.
 
 ### JPA Repositories
-Repositories vs DAOs, though choice. A good old base DAO can be so usefull but a lot of Spring Starter Guides made me give Spring Data JPA a try.
+Repositories vs DAOs, though choice. A good old base DAO can be so useful. A lot of Spring Starter Guides made me 
+pick Spring Data JPA for a try.
 
 ### No Impls!
 Interesting discussion with a collegue over that and YAGNI. Basically every project I worked on always had Interfaces and their one to one Impl.
@@ -46,22 +67,17 @@ My choice was Postgresql but with time running short and AppFog supporting only 
 the In Memory DB from Spring Boot Starter JPA would do the trick.
 
 ### Lombok
-Used it in most of my projets! @RequiredArgsConstructors is not really useable on real projects but could be used here to speed up object creation.
+Used it in most of my projets! 
 
 ### Guava
-So useful library for a serious Java project. Not really required here since there is no complex business logic (yet).
+Useful library for any serious Java project. Overkill here.
 
 ### Jodatime
 Couldn't find a use for it in the current version of Acme Retail! Will become the standard with Java 8.
 
-### No final
-Skipped the final fields and variables for this projects since not everyone likes it, but I am usually a bit crazy
+### No final modifier
+Skipped the final fields and variables for this projects since not everyone like it. I am usually a bit crazy
 about placing finals everywhere.
 
 ### Angular
-A no brainer, unfortunately with the time allowed I couldn't go further.
-
-## TODO
-* make stuff visible within angular
-* test with appfog
-* order properties and stuff
+A no brainer, unfortunately with the time allowed I couldn't go further than some basic stuff.
