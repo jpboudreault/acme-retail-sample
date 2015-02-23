@@ -14,7 +14,7 @@ public class UserService {
     UserRepository userRepository;
 
     public String getEditionCodeForUser(String openId) {
-        // if we found one, we have a major problem, i'll trust the system and get the first one
+        // if we found none, we have a major problem, i'll trust the system and get the first one
         User user = Iterables.getFirst(userRepository.findByOpenId(openId), null);
 
         return user != null ? user.getCompany().getEditionCode() : null;

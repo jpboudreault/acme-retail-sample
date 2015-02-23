@@ -17,9 +17,9 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Payload {
-	private Company company;
-	private Account account;
-	private Order order;
-	private Notice notice;
-	private User user;
+    private Company company;
+    private Account account;
+    private Order order;
+    private Notice notice;
+    private User user;
 }

@@ -8,9 +8,9 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Company {
-	private String uuid;
-	private String email;
-	private String name;
-	private String phoneNumber;
-	private String website;
+    private String uuid;
+    private String email;
+    private String name;
+    private String phoneNumber;
+    private String website;
 }

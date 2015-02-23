@@ -84,9 +84,9 @@ public class BeanConfiguration extends BaseProtectedResourceDetails {
         return new CustomUserDetailsService();
     }
 
-        /**
-         * Required by appDirectProcessingFilter
-         */
+    /**
+     * Required by appDirectProcessingFilter
+     */
     @Bean
     public OAuthProviderTokenServices providerTokenServices() {
         return new InMemoryProviderTokenServices();

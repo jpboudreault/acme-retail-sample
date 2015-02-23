@@ -19,7 +19,7 @@ public class PermissionController {
         for (GrantedAuthority ga : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
             permissions.add(ga.getAuthority());
         }
-        
+
         return permissions;
     }
 }

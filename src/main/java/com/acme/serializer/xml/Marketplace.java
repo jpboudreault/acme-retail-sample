@@ -8,6 +8,6 @@ import lombok.Setter;
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Marketplace {
-	private String partner;
-	private String baseUrl;
+    private String partner;
+    private String baseUrl;
 }

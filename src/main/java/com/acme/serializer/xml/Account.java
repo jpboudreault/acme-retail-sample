@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Account {
-	private Long accountIdentifier;
-	private String status;
+    private Long accountIdentifier;
+    private String status;
 }

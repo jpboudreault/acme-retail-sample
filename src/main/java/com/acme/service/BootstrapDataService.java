@@ -22,7 +22,7 @@ import java.util.Random;
 @Service
 public class BootstrapDataService implements InitializingBean {
     private static final int SALES_LIMIT = 1000;
-    
+
     private final Log LOG = LogFactory.getLog(BootstrapDataService.class);
 
     @Autowired

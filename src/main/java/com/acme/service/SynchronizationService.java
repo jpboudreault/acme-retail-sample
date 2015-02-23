@@ -32,9 +32,9 @@ public class SynchronizationService {
                 adCompany.getUuid(),
                 editionCode
         );
-        
+
         companyRepository.save(company);
-        
+
         return company;
     }
 
@@ -47,9 +47,9 @@ public class SynchronizationService {
                 adUser.getUuid()
         );
         user.setCompany(companyRepository.findOne(companyId));
-        
+
         userRepository.save(user);
-        
+
         return user;
     }
 
@@ -65,23 +65,23 @@ public class SynchronizationService {
 
         // sanity check on the user's company
         Preconditions.checkState(
-                companyId.equals(user.getCompany().getId()), 
+                companyId.equals(user.getCompany().getId()),
                 String.format("User %s doesn't belong in the correct company %d", openId, companyId));
-        
+
         userRepository.delete(user); // we checked that there's one already
-    } 
-        
+    }
+
     public void updateSubscription(Long companyId, String editionCode) {
         Company company = companyRepository.findOne(companyId);
         company.setEditionCode(editionCode);
-        
+
         companyRepository.save(company);
     }
 
     public void applyNotice(Long companyId, String notice) {
         Company company = companyRepository.findOne(companyId);
         company.setNotice(notice);
-        
+
         companyRepository.save(company);
     }
 
@@ -94,7 +94,7 @@ public class SynchronizationService {
             LOG.warn(String.format("No subscription to cancel, company not found : %d", companyId));
             return;
         }
-        
+
         // delete users and company
         Iterable<User> users = userRepository.findByCompany(company);
         if (users != null) {

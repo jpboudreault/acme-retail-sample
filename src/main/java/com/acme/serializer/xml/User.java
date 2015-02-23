@@ -8,10 +8,10 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
-	private String email;
-	private String firstName;
-	private String lastName;
-	private String openId;
-	private String language;
-	private String uuid;
+    private String email;
+    private String firstName;
+    private String lastName;
+    private String openId;
+    private String language;
+    private String uuid;
 }

@@ -22,7 +22,7 @@ public class CustomUserDetailsService implements AuthenticationUserDetailsServic
 
         // this will create a role from the edition code, ex: ROLE_PREMIUM, ROLE_FREE
         String role = String.format("ROLE_%s", edition.toUpperCase());
-        
+
         return new User(token.getName(), "", AuthorityUtils.createAuthorityList(role));
     }
 }
