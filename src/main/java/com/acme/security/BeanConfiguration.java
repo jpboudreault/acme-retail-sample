@@ -76,6 +76,9 @@ public class BeanConfiguration extends BaseProtectedResourceDetails {
         return consumerDetailsService;
     }
 
+    /**
+     * To authenticate user and create their roles
+     */
     @Bean
     public AuthenticationUserDetailsService<OpenIDAuthenticationToken> customUserDetailsService(){
         return new CustomUserDetailsService();

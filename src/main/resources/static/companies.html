@@ -1,7 +1,7 @@
-<h1>Companies (public)</h1>
+<h1>Companies <small>unsecured</small></h1>
 <h3>Current subscribers of Acme Retail Sales Tool</h3>
 <ul>
-	<li ng-repeat="company in companies">{{company.name}} ({{company.editionCode}})</li>
+	<li ng-repeat="company in companies"> <span>{{company.name}}</span> <span class="label label-default">({{company.editionCode}})</span> <span class="label label-warning" ng-if="company.notice">{{company.notice}}</span></li>
 	<li ng-show="_.isEmpty(companies)">none</li>
 </ul>
 <h3>And their users</h3>

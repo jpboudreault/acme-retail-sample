@@ -30,51 +30,28 @@ angular.module('app', [ 'ngRoute' ]).config(function($routeProvider) {    // all
         return $route.current && route === $route.current.controller;
     };
 
-    // todo use or clear
-    var authenticate = function(callback) {
-        $http.get('user').success(function(data) {
-            if (data.name) {
+    // this part could use more love, but it is out of scope
+    $scope.authenticate = function() {
+        // get permissions
+        $http.get('api/permissions').success(function(data) {
+            if (_.isObject(data)) {
                 $rootScope.authenticated = true;
+                $rootScope.roles = data;
             } else {
                 $rootScope.authenticated = false;
             }
-            callback && callback();
-        }).error(function() {
-            $rootScope.authenticated = false;
-            callback && callback();
         });
-
     };
 
-    // todo use or clear
-    //authenticate();
-    $scope.credentials = {};
-    $scope.login = function() {
-        $http.post('login', $.param($scope.credentials), {
-            headers : {
-                "content-type" : "application/x-www-form-urlencoded"
-            }
-        }).success(function(data) {
-            authenticate(function() {
-                if ($rootScope.authenticated) {
-                    console.log("Login succeeded")
-                    $location.path("/");
-                    $scope.error = true;
-                    $rootScope.authenticated = true;
-                } else {
-                    console.log("Login failed with redirect")
-                    $location.path("/login");
-                    $scope.error = true;
-                    $rootScope.authenticated = false;
-                }
-            });
-        }).error(function(data) {
-            console.log("Login failed")
-            $location.path("/login");
-            $scope.error = true;
-            $rootScope.authenticated = false;
-        })
+    $scope.logout = function() {
+        // logout
+        $rootScope.authenticated = false;
+        $rootScope.role = null;
+        $location.path("/logout");
     };
+
+    // trigger authentication
+    $scope.authenticate();
 }).controller('products', function($scope, $http) {
     // load products
     $http.get('api/products').success(function(data) {
@@ -99,5 +76,6 @@ angular.module('app', [ 'ngRoute' ]).config(function($routeProvider) {    // all
         });
     };
 }).run(function($rootScope) {
+    // allow lodash in views
     $rootScope._ = _;
 });
