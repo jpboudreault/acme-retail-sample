@@ -8,5 +8,5 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Notice {
-	private String type;
+    private String type;
 }

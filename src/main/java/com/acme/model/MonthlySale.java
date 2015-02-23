@@ -32,7 +32,7 @@ public class MonthlySale {
     @NonNull
     @NotNull
     private Integer month;
-    
+
     @NonNull
     @NotNull
     private Integer sales;

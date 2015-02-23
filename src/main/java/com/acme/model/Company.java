@@ -26,7 +26,7 @@ public class Company {
     private String name;
 
     private String notice;
-    
+
     @NonNull
     @NotNull
     @Column(unique = true)

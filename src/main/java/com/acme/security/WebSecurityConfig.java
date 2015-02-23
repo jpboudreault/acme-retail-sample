@@ -31,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/users", "/api/users/**").permitAll() // unsecured by design
 
                 // secured using the appDirectProcessingFilter
-                .antMatchers("/api/app-direct/*").permitAll() 
+                .antMatchers("/api/app-direct/*").permitAll()
 
                 .anyRequest().authenticated()
 

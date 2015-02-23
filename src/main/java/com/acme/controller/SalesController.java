@@ -31,7 +31,7 @@ public class SalesController {
         if (product == null) {
             throw new ResourceNotFoundException();
         }
-        
+
         return monthlySaleRepository.findByProduct(product);
     }
 }
