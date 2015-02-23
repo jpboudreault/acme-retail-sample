@@ -4,7 +4,7 @@ import com.acme.serializer.xml.Company;
 import com.acme.serializer.xml.Event;
 import com.acme.serializer.xml.Result;
 import com.acme.serializer.xml.User;
-import com.acme.service.EventExtractorService;
+import com.acme.service.EventExtractionService;
 import com.acme.service.SynchronizationService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * Controller specifically for AppDirect notifications
  */
-// FIXME secure with oauth
 @Controller
 @RequestMapping("api/app-direct")
 @Transactional
@@ -30,7 +29,7 @@ public class AppDirectController {
     OAuthRestTemplate appDirectRestTemplate;
 
     @Autowired
-    EventExtractorService eventExtractorService;
+    EventExtractionService eventExtractionService;
 
     @Autowired
     SynchronizationService synchronizationService;
@@ -43,12 +42,12 @@ public class AppDirectController {
         try {
             Event event = appDirectRestTemplate.getForObject(url, Event.class);
 
-            Company company = eventExtractorService.extractCompany(event);
-            String editionCode = eventExtractorService.extractCompanyEditionCode(event);
+            Company company = eventExtractionService.extractCompany(event);
+            String editionCode = eventExtractionService.extractCompanyEditionCode(event);
 
             Long companyId = synchronizationService.createCompany(company, editionCode).getId();
 
-            User user = eventExtractorService.extractUser(event);
+            User user = eventExtractionService.extractCreator(event);
 
             synchronizationService.createUser(user, companyId);
 
@@ -70,8 +69,8 @@ public class AppDirectController {
         try {
             Event event = appDirectRestTemplate.getForObject(url, Event.class);
 
-            String editionCode = eventExtractorService.extractCompanyEditionCode(event);
-            Long companyId = eventExtractorService.extractCompanyIdentifier(event);
+            String editionCode = eventExtractionService.extractCompanyEditionCode(event);
+            Long companyId = eventExtractionService.extractCompanyIdentifier(event);
 
             synchronizationService.updateSubscription(companyId, editionCode);
 
@@ -90,7 +89,7 @@ public class AppDirectController {
         try {
             Event event = appDirectRestTemplate.getForObject(url, Event.class);
 
-            Long companyId = eventExtractorService.extractCompanyIdentifier(event);
+            Long companyId = eventExtractionService.extractCompanyIdentifier(event);
 
             synchronizationService.cancelSubscription(companyId);
 
@@ -109,8 +108,8 @@ public class AppDirectController {
         try {
             Event event = appDirectRestTemplate.getForObject(url, Event.class);
 
-            Long companyId = eventExtractorService.extractCompanyIdentifier(event);
-            String notice = eventExtractorService.extractNotice(event);
+            Long companyId = eventExtractionService.extractCompanyIdentifier(event);
+            String notice = eventExtractionService.extractNotice(event);
 
             synchronizationService.applyNotice(companyId, notice);
 
@@ -129,8 +128,8 @@ public class AppDirectController {
         try {
             Event event = appDirectRestTemplate.getForObject(url, Event.class);
 
-            Long companyId = eventExtractorService.extractCompanyIdentifier(event);
-            User user = eventExtractorService.extractUser(event);
+            Long companyId = eventExtractionService.extractCompanyIdentifier(event);
+            User user = eventExtractionService.extractUser(event);
 
             synchronizationService.createUser(user, companyId);
 
@@ -149,8 +148,8 @@ public class AppDirectController {
         try {
             Event event = appDirectRestTemplate.getForObject(url, Event.class);
 
-            Long companyId = eventExtractorService.extractCompanyIdentifier(event);
-            String openId = eventExtractorService.extractUser(event).getOpenId();
+            Long companyId = eventExtractionService.extractCompanyIdentifier(event);
+            String openId = eventExtractionService.extractUser(event).getOpenId();
 
             synchronizationService.removeUser(openId, companyId);
 

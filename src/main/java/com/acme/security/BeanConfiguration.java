@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.oauth.common.signature.SharedConsumerSecretImpl;
 import org.springframework.security.oauth.consumer.BaseProtectedResourceDetails;
 import org.springframework.security.oauth.consumer.client.OAuthRestTemplate;
@@ -16,6 +17,7 @@ import org.springframework.security.oauth.provider.filter.OAuthProviderProcessin
 import org.springframework.security.oauth.provider.filter.ProtectedResourceProcessingFilter;
 import org.springframework.security.oauth.provider.token.InMemoryProviderTokenServices;
 import org.springframework.security.oauth.provider.token.OAuthProviderTokenServices;
+import org.springframework.security.openid.OpenIDAuthenticationToken;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
@@ -32,7 +34,7 @@ public class BeanConfiguration extends BaseProtectedResourceDetails {
     private String appDirectOAuthConsumerSecret;
 
     @Bean
-    public OAuthRestTemplate getAppDirectRestTemplate(){
+    public OAuthRestTemplate appDirectRestTemplate(){
         BaseProtectedResourceDetails resourceDetails = new BaseProtectedResourceDetails();
         resourceDetails.setSharedSecret(new SharedConsumerSecretImpl(appDirectOAuthConsumerSecret));
         resourceDetails.setConsumerKey(appDirectOAuthConsumerKey);
@@ -74,9 +76,14 @@ public class BeanConfiguration extends BaseProtectedResourceDetails {
         return consumerDetailsService;
     }
 
-    /**
-     * Required by appDirectProcessingFilter
-     */
+    @Bean
+    public AuthenticationUserDetailsService<OpenIDAuthenticationToken> customUserDetailsService(){
+        return new CustomUserDetailsService();
+    }
+
+        /**
+         * Required by appDirectProcessingFilter
+         */
     @Bean
     public OAuthProviderTokenServices providerTokenServices() {
         return new InMemoryProviderTokenServices();

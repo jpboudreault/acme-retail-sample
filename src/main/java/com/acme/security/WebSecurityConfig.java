@@ -5,8 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.oauth.provider.filter.OAuthProviderProcessingFilter;
 import org.springframework.security.openid.OpenIDAuthenticationFilter;
+import org.springframework.security.openid.OpenIDAuthenticationToken;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -15,20 +17,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     OAuthProviderProcessingFilter appDirectProcessingFilter;
 
+    @Autowired
+    AuthenticationUserDetailsService<OpenIDAuthenticationToken> customUserDetailsService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
                 .antMatchers("/*.html", "/**/*.js", "/").permitAll()
-                .antMatchers("/api/companies", "/api/companies/**").permitAll() // unsecured by design
+
+                // unsecured by design
+                .antMatchers("/api/companies", "/api/companies/**").permitAll()
                 .antMatchers("/api/users", "/api/users/**").permitAll() // unsecured by design
-                .antMatchers("/api/app-direct/*").permitAll() // security using the app direct filter
+
+                // secured using the appDirectProcessingFilter
+                .antMatchers("/api/app-direct/*").permitAll() 
+
                 .anyRequest().authenticated()
 
                 .and()
                 .openidLogin()
                 .permitAll()
-                .authenticationUserDetailsService(new CustomUserDetailsService())
+                .authenticationUserDetailsService(customUserDetailsService)
 
                 .and()
                 .logout()

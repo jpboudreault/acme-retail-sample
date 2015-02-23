@@ -52,10 +52,11 @@ do require to be logged in.
 First time using it, loving it! Similar to BuildConfig.groovy on Grails.
 
 ### Spring Boot
-First time using it, a bit unsure about it! But this might become the new way of doing things.
+First time using it, a bit lost. According to spring.io, this is the new way.
 
 ### JPA Repositories
-Repositories vs DAOs, though choice. A good old base DAO can be so usefull but a lot of Spring Starter Guides made me give Spring Data JPA a try.
+Repositories vs DAOs, though choice. A good old base DAO can be so useful. A lot of Spring Starter Guides made me 
+pick Spring Data JPA for a try.
 
 ### No Impls!
 Interesting discussion with a collegue over that and YAGNI. Basically every project I worked on always had Interfaces and their one to one Impl.
@@ -69,13 +70,13 @@ the In Memory DB from Spring Boot Starter JPA would do the trick.
 Used it in most of my projets! 
 
 ### Guava
-So useful library for a serious Java project. Not really required here since there is no complex business logic (yet).
+Useful library for any serious Java project. Overkill here.
 
 ### Jodatime
 Couldn't find a use for it in the current version of Acme Retail! Will become the standard with Java 8.
 
 ### No final modifier
-Skipped the final fields and variables for this projects since not everyone likes it, but I am usually a bit crazy
+Skipped the final fields and variables for this projects since not everyone like it. I am usually a bit crazy
 about placing finals everywhere.
 
 ### Angular
