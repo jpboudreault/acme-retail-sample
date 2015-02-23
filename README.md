@@ -13,8 +13,8 @@ Acme Retail App was a holiday project to experiment on the new Spring features (
 website. When AppDirect's opportunity came by, I decided to use it as a base. This proved challenging for a couple of 
 reasons, one of them being my familiarity with the new way of configuring things.
 
-The vision was to have some data visible only when the user had a particular subscription level. Changes could have been
-seen live. Unfortunately, I did not get the time to finish it up to this point.
+The vision was to have some data visible only when the user had a particular subscription level. This behavior can be
+observed when logged as a FREE or PREMIUM subscriber.
 
 I decided to leave some sections of the app unsecured by design to always display AppDirect's integration. Some sections
 do require to be logged in.
@@ -81,8 +81,3 @@ about placing finals everywhere.
 
 ### Angular
 A no brainer, unfortunately with the time allowed I couldn't go further than some basic stuff.
-
-## TODO
-* make stuff visible within angular
-* test with appfog
-* order properties and stuff
