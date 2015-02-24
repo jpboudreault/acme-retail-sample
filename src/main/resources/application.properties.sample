@@ -1,2 +1,5 @@
 appdirect.oauth.consumer.key=abcd
 appdirect.oauth.consumer.secret=efgh
+#use pivotal when hosted on cloudfoundry
+#logout.url=https://run.pivotal.io
+#logout.url=https://www.appdirect.com
